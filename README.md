@@ -13,7 +13,7 @@ Required arguments:
   -s 	storage			/../..				directory WITHOUT trailing '/' to record into
 
 OPTIONS:
-  -d 	clip-duration	1800			clip duration in secs (default: 3600 which is 1 hour)
-  -r	retention		31			drop recordings after _ days (default: 7)
+  -d 	clip-duration	1800				clip duration in secs (default: 3600 which is 1 hour)
+  -r	retention		31					drop recordings after _ days (default: 7)
   -h	Show this message and exit
 ````
