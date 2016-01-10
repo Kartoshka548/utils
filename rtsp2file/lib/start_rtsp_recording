@@ -4,7 +4,7 @@ usage(){
 cat << EOF
 usage: $0 options
 
-Utility to record rtsp stream locally with vlc. It also deletes records files older than 7 days
+Utility to record rtsp stream locally with vlc (tested with v2.2.1). It also deletes recordings older than 7 days
 
 USAGE: ./start_rtsp_recording -c 127.0.0.1 -s ~/history -d 3600 -r 7'
 Required arguments: 
@@ -23,6 +23,7 @@ CAM_IP=
 STORAGE=~/history
 DURATION=3600
 RETENTION=7
+
 while getopts “hc:s:d:r:” OPTION
 do
      case $OPTION in
@@ -53,6 +54,8 @@ done
 date_taken=$(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)
 file_prefix='record'
 
+# OSX. Feel free to modify.
+vlc_location=/Applications/VLC.app/Contents/MacOS/VLC
 
 # ----------------------------------------------------------------------
 # delete files from the directory which are older than 7 days (local storage)
@@ -68,5 +71,5 @@ find $STORAGE/$file_prefix-* -mtime +$RETENTION -exec rm {} \;
 # ----------------------------------------------------------------------
 # start recording
 # ----------------------------------------------------------------------
-/Applications/VLC.app/Contents/MacOS/VLC rtsp://$CAM_IP:554/ch0_0.h264 --sout file/ts:$STORAGE/$file_prefix-$date_taken.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit -I dummy
+$vlc_location rtsp://$CAM_IP:554/ch0_0.h264 --sout file/ts:$STORAGE/$file_prefix-$date_taken.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit -I dummy
 
