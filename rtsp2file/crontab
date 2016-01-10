@@ -1,4 +1,8 @@
-# record video stream from living room cam, eah file: 1/2 hour, retention: 7 days (max 50Gb continuously)
+# record video stream from the cam 
 # when specifying running intervals, do not forget to change -d (duration) below to match 
 
-*/30 * * * * ~/rtsp2file/lib/start_rtsp_recording -c 127.0.0.1 -s ~/rtsp2file/history -d 1800 -r 7 > /dev/null 2>&1
+#### eah file: 1/2 hour, retention: 7 days (max 50Gb continuously)
+# */30 * * * * ~/rtsp2file/lib/start_rtsp_recording -c 127.0.0.1 -s ~/rtsp2file/history -d 1800 -r 7 > /dev/null 2>&1
+
+# every hour: hourly files, retention 7 days
+0 * * * * ~/rtsp2file/lib/start_rtsp_recording -c 127.0.0.1 -s ~/rtsp2file/history > /dev/null 2>&1
