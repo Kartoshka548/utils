@@ -1,0 +1,72 @@
+#! /usr//bin/env bash
+
+usage(){
+cat << EOF
+usage: $0 options
+
+Utility to record rtsp stream locally with vlc. It also deletes records files older than 7 days
+
+USAGE: ./start_rtsp_recording -c 127.0.0.1 -s ~/history -d 3600 -r 7'
+Required arguments: 
+  -c 	camera 		- xxx.xxx.xxx.xxx'	camera ip (RTSP)
+  -s 	storage 	/../.. 			directory WITHOUT TRAIING SLASH to record into
+  -d 	clip-duration 	3600 			clip duration in secs
+  -r    retention	7			days to keep the records for, after which they are removed.
+
+OPTIONS:
+   -h 	Show this message
+EOF
+}
+
+
+CAM_IP=
+STORAGE=~/history
+DURATION=3600
+RETENTION=7
+while getopts “hc:s:d:r:” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         c)
+	    CAM_IP=$OPTARG 
+             ;;
+         s)
+             STORAGE=$OPTARG
+             ;;
+         d)
+             DURATION=$OPTARG
+             ;;
+         r)
+             RETENTION=$OPTARG
+	     ;;
+         \?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+
+date_taken=$(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)
+file_prefix='record'
+
+
+# ----------------------------------------------------------------------
+# delete files from the directory which are older than 7 days (local storage)
+# ----------------------------------------------------------------------
+#echo "find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;"
+#find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;
+#    mtime +7 - for any files older than days 
+#    mmin +15 - for any files older than 15 minutes
+
+find $STORAGE/$file_prefix-* -mtime +$RETENTION -exec rm {} \;
+
+
+# ----------------------------------------------------------------------
+# start recording
+# ----------------------------------------------------------------------
+/Applications/VLC.app/Contents/MacOS/VLC rtsp://$CAM_IP:554/ch0_0.h264 --sout file/ts:$STORAGE/$file_prefix-$date_taken.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit -I dummy
+
