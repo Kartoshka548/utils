@@ -1,4 +1,5 @@
-### Utility to record RTSP stream locally with vlc. By default, it also deletes recordings older than 7 days (50Gb of video data weekly). ###
+### Utility to record RTSP stream locally with vlc. ### 
+###### By default, it also deletes recordings older than 7 days (50Gb of video data weekly). ######
 
 *Scheduled by cron, it runs every 30 minutes and records camera RTSP stream for 30 minutes, after which new file is created. 
 File format is record-YYYY-MM-DD-HH-MM-SS.ts*
