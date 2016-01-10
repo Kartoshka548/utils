@@ -13,4 +13,4 @@ Required arguments:
 OPTIONS:
   -d 	clip-duration 	3600 			clip duration in secs
   -r    retention	7			days to keep the records for, after which they are removed
-   -h 	Show this message
+  -h 	Show this message
