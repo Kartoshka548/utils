@@ -15,12 +15,12 @@ echo "*/1 * * * * $SCRIPTS_DIR/$EXECUTABLE" > $SCRIPTS_DIR/crontab.bkp
 touch $SCRIPTS_DIR/heys.txt
 
 
-# actual script to be executed with cron
+# actual script to be executed with cron - discover self public IP (and post it somewhere later on) 
 #-------------------------------------------------
 cat $SCRIPTS_DIR/$EXECUTABLE << EOF
 #!/usr/bin/env sh  
 DIR=/home/scripts
-echo 'hey_'+ $(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss) >> $DIR/heys.txt
+echo $(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)': '$(wget http://ipinfo.io/ip -qO -) > $DIR/heys.txt
 EOF
 
 # make it executable
