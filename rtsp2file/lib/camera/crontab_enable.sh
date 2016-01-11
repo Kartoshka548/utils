@@ -12,7 +12,7 @@ mkdir $SCRIPTS_DIR
 echo "*/1 * * * * $SCRIPTS_DIR/$EXECUTABLE" > $SCRIPTS_DIR/crontab.bkp 
 
 # testing cron that it works with simple echo loop below
-touch $SCRIPTS_DIR/heys.txt
+touch $SCRIPTS_DIR/public_ip
 
 
 # actual script to be executed with cron - discover self public IP (and post it somewhere later on) 
@@ -20,7 +20,7 @@ touch $SCRIPTS_DIR/heys.txt
 cat $SCRIPTS_DIR/$EXECUTABLE << EOF
 #!/usr/bin/env sh  
 DIR=/home/scripts
-echo $(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)': '$(wget http://ipinfo.io/ip -qO -) > $DIR/heys.txt
+echo $(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)': '$(wget http://ipinfo.io/ip -qO -) > $DIR/public_ip
 EOF
 
 # make it executable
