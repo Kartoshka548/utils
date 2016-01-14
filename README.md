@@ -18,7 +18,8 @@ OPTIONS:
   -h	Show this message and exit
 ````
 
-- **IPcam**
-  * [Welcome page](http://htmlpreview.github.io/?https://github.com/Kartoshka548/utils/blob/master/rtsp2file/lib/camera/home/web/index.html)
-    *Xiaomi Yi IP Cam is a mini computer (similar to getchip.com or Raspberry Pi) with wifi module, sold as an IP Camera.* 
-	It runs Linux 3.0.8 embedded on ````ARM926EJ-S (ARMv5TEJ)```` CPU. Full machine identifier is `hi3518`.* It exposes a mini web server which is modified to run simple html welcome page. Each <interval>, this HTML page is modified by cron job with sed to include information about CPU load. More importantly, cron also makes a request with wget to update dynamicDNS kindly provided by duckdns.org team, to keep DNS associated with dynamic IP our network ackquires.
+### IPcam: RTSP, DynamicDNS + miniwebserver
+  ** [HTML: Welcome page](http://htmlpreview.github.io/?https://github.com/Kartoshka548/utils/blob/master/camera/home/web/index.html) **
+    *Xiaomi Yi IP Cam is a 'dropcam clone mini computer with wifi module, sold as an IP Camera.* 
+	It runs `Linux 3.0.8` embedded on `ARM926EJ-S (ARMv5TEJ)` CPU. Full machine identifier is `hi3518`. It exposes a mini web server which is modified to run simple html welcome page. Each <interval>, this HTML page is modified by cron job with sed to include information about CPU load. 
+	More importantly, cron also makes a request with wget to update dynamicDNS kindly provided by [duckdns.org](www.duckdns.org) team, to keep DNS associated with dynamic IP our network ackquires.
