@@ -1,0 +1,21 @@
+# EVERY MINUTE
+########################################################
+# * * * * * /home/rtsp/update_public_dns.sh /home/rtsp/public_ip.log
+
+# EVERY 5 MINUTES
+########################################################
+## HTML::server up time update
+*/5 * * * * UT=$(uptime); sed -i "s/<span id=\"uptime\">.*<\/span>/<span id=\"uptime\">$UT<\/span>/g" /home/web/index.html
+
+# EVERY HALF-HOUR
+########################################################
+0,30 * * * * /home/rtsp/update_public_dns.sh /home/rtsp/public_ip.log
+
+## HTML::public ip status update
+5,35 * * * * P_IP=$(tail -n1 /home/rtsp/public_ip.log); sed -i "s/<span id=\"public_ip\">.*<\/span>/<span id=\"public_ip\">$P_IP<\/span>/g" /home/web/index.html
+
+
+# 00:00 EVERY FIRST OF EVERY MONTH
+########################################################
+## trim dynamic dns logfile to last 20 lines
+0 0 1 * * * echo "$(tail -n 20 /home/rtsp/public_ip.log)" > /home/rtsp/public_ip.log

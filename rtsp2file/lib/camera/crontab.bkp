@@ -1,6 +1,0 @@
-# every minute
-#*/1 * * * * /home/scripts/ftpush.sh
-#* * * * * /home/scripts/update_public_dns.sh /home/scripts/public_ip
-
-# every half-hour
-0,30 * * * * /home/scripts/update_public_dns.sh /home/scripts/public_ip

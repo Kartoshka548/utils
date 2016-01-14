@@ -8,7 +8,7 @@ Utility to record rtsp stream locally with vlc (tested with v2.2.1). It also del
 
 USAGE: ./start_rtsp_recording -c 127.0.0.1 -s ~/history -d 3600 -r 7'
 Required arguments: 
-  -c 	camera 		- xxx.xxx.xxx.xxx'	camera ip (RTSP)
+  -c 	camera 		- rtsp://127.0.0.1:0000/stream'	RTSP_SOURCE
   -s 	storage 	/../.. 			directory WITHOUT TRAIING SLASH to record into
   -d 	clip-duration 	3600 			clip duration in secs
   -r    retention	7			days to keep the records for, after which they are removed.
@@ -45,8 +45,8 @@ do
              DURATION=$OPTARG
              ;;
          r)
-            RETENTION=$OPTARG
-            ;;
+             RETENTION=$OPTARG
+             ;;
          \?)
              usage
              exit
@@ -59,9 +59,9 @@ done
 # ----------------------------------------------------------------------
 
 #echo "find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;"
-#find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;
-#    mtime +7 - for any files older than days 
-#    mmin +15 - for any files older than 15 minutes
+#    mtime +7  - for any files older than (days)
+#    mmin +900 - for any files older than (minutes)
+
 find $STORAGE/$FILE_PREFIX-* -mtime +$RETENTION -exec rm {} \;
 
 
@@ -70,5 +70,5 @@ find $STORAGE/$FILE_PREFIX-* -mtime +$RETENTION -exec rm {} \;
 # start recording
 # ----------------------------------------------------------------------
 
-$VLC_LOCATION -I dummy rtsp://$RESOURCE:554/ch0_0.h264 --sout file/ts:$STORAGE/$FILE_PREFIX-$DATE_TAKEN.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit
+$VLC_LOCATION -I dummy $RESOURCE --sout file/ts:$STORAGE/$FILE_PREFIX-$DATE_TAKEN.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit
 
