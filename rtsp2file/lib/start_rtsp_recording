@@ -18,21 +18,25 @@ OPTIONS:
 EOF
 }
 
-
-CAM_IP=
+DATE_TAKEN=$(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)
+FILE_PREFIX='record'
+RESOURCE=
 STORAGE=~/history
 DURATION=3600
 RETENTION=7
 
+# OSX. Feel free to modify.
+VLC_LOCATION=/Applications/VLC.app/Contents/MacOS/VLC
+
 while getopts “hc:s:d:r:” OPTION
 do
-     case $OPTION in
+    case $OPTION in
          h)
              usage
              exit 1
              ;;
          c)
-	    CAM_IP=$OPTARG 
+             RESOURCE=$OPTARG
              ;;
          s)
              STORAGE=$OPTARG
@@ -41,35 +45,30 @@ do
              DURATION=$OPTARG
              ;;
          r)
-             RETENTION=$OPTARG
-	     ;;
+            RETENTION=$OPTARG
+            ;;
          \?)
              usage
              exit
              ;;
-     esac
+    esac
 done
-
-
-date_taken=$(date +\%Y-\%m-\%d_\%Hh\%Mm\%Ss)
-file_prefix='record'
-
-# OSX. Feel free to modify.
-vlc_location=/Applications/VLC.app/Contents/MacOS/VLC
 
 # ----------------------------------------------------------------------
 # delete files from the directory which are older than 7 days (local storage)
 # ----------------------------------------------------------------------
+
 #echo "find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;"
 #find $STORAGE/$file_prefix-* -mmin +$RETENTION -exec rm {} \;
 #    mtime +7 - for any files older than days 
 #    mmin +15 - for any files older than 15 minutes
+find $STORAGE/$FILE_PREFIX-* -mtime +$RETENTION -exec rm {} \;
 
-find $STORAGE/$file_prefix-* -mtime +$RETENTION -exec rm {} \;
 
 
 # ----------------------------------------------------------------------
 # start recording
 # ----------------------------------------------------------------------
-$vlc_location rtsp://$CAM_IP:554/ch0_0.h264 --sout file/ts:$STORAGE/$file_prefix-$date_taken.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit -I dummy
+
+$VLC_LOCATION -I dummy rtsp://$RESOURCE:554/ch0_0.h264 --sout file/ts:$STORAGE/$FILE_PREFIX-$DATE_TAKEN.ts --run-time=$DURATION --stop-time=$DURATION vlc://quit
 
